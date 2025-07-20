@@ -36,7 +36,7 @@ struct SendingAndReceivingCodableDataWithURLSessionAndSwiftUI: View {
     
     func loadData() async {
         // MARK: - First create URL we want to read from Apple servers
-        guard let url = URL(string: "https://itunes.apple.com/search?tearm=taylor+swift&entity=song") else {
+        guard let url = URL(string: "https://itunes.apple.com/search?term=taylor+swift&entity=song") else {
             print("Invalid URL")
             return
         }
@@ -52,4 +52,8 @@ struct SendingAndReceivingCodableDataWithURLSessionAndSwiftUI: View {
             print("Invalid data")
         }
     }
+}
+
+#Preview {
+    SendingAndReceivingCodableDataWithURLSessionAndSwiftUI()
 }
