@@ -8,14 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var order = Order()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            Form {
+                Section {
+                    Picker("Select your type", selection: $order.type) {
+                        //MARK: - Using 'indices' is appropriate here since 'Order.types' is a static array and its contents will not change dynamically. This approach also provides access to the index if needed.
+                        ForEach(Order.types.indices, id: \.self) {
+                            Text(Order.types[$0])
+                        }
+                    }
+                    Stepper("Number of cakes \(order.quantity)", value: $order.quantity, in: 3...20)
+                }
+                Section {
+                    Toggle("Any specioal requests?", isOn: $order.specialRequestEnabled)
+                    
+                    if order.specialRequestEnabled {
+                        Toggle("Add extra frosting", isOn: $order.extraFrosting)
+                        
+                        Toggle("Add extra spprinkles", isOn: $order.addSprinkles)
+                    }
+                }
+                Section {
+                    NavigationLink("Delivery details") {
+                        AddressView(order: order)
+                    }
+                }
+            }
+            .navigationTitle("Cupcake Corner")
         }
-        .padding()
     }
 }
 
