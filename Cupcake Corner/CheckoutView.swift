@@ -12,7 +12,30 @@ struct CheckoutView: View {
     var order: Order
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            VStack {
+                AsyncImage(url: URL(string: "https://hws.dev/img/cupcakes@3x.jpg"),
+                           scale: 3) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(height: 233)
+                
+                Text("Your total cost is \(order.cost, format: .currency(code: "EUR"))")
+                    .font(.title2)
+                
+                //MARK: - Button action Empty closure for now
+                Button("Place order", action: {})
+                    .padding()
+                    
+            }
+        }
+        .navigationTitle("Chect out")
+        .navigationBarTitleDisplayMode(.inline)
+        .scrollBounceBehavior(.basedOnSize)
     }
 }
 
