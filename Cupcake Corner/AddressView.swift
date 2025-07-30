@@ -26,7 +26,9 @@ struct AddressView: View {
                     CheckoutView(order: order)
                 }
             }
-            .disabled(order.hasValidAddress == false)
+            //MARK: - Challenge 1., Project Cupcake Corner
+            //.disabled(order.hasValidAddress == false)
+            .disabled(order.isShippingInfoValid == false)
         }
         .navigationTitle("Delivery details")
         .navigationBarTitleDisplayMode(.inline)

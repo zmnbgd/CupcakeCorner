@@ -29,13 +29,13 @@ class Order: Codable {
     var quantity = 3
     
     var specialRequestEnabled = false {
-    didSet {
-        if specialRequestEnabled == false {
-            extraFrosting = false
-            addSprinkles = false
+        didSet {
+            if specialRequestEnabled == false {
+                extraFrosting = false
+                addSprinkles = false
+            }
         }
     }
-}
     var extraFrosting = false
     var addSprinkles = false
     
@@ -44,12 +44,22 @@ class Order: Codable {
     var city = ""
     var zip = ""
     
-    var hasValidAddress: Bool {
-        if name.isEmpty || streetAddress.isEmpty || city.isEmpty || zip.isEmpty {
+//    var hasValidAddress: Bool {
+//        if name.isEmpty || streetAddress.isEmpty || city.isEmpty || zip.isEmpty {
+//            return false
+//        }
+//        return true
+//    }
+    //MARK: - Challenge 1., Project Cupcake Corner: Our address fields are currently considered valid if they contain anything, even if it’s just only whitespace. Improve the validation to make sure a string of pure whitespace is invalid.
+    //MARK: Comment: The condition is intentionally written to cover all fields of the user placing the order.
+    var isShippingInfoValid: Bool {
+        if streetAddress.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || city.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || zip.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return false
         }
         return true
     }
+
+
     
     var cost: Decimal {
         //MARK: - 2$ per cake
@@ -69,3 +79,9 @@ class Order: Codable {
         return cost
     }
 }
+
+
+
+
+
+
