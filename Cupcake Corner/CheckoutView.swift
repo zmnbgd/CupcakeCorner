@@ -14,8 +14,9 @@ struct CheckoutView: View {
     @State private var confirmaionMessage = ""
     @State private var showingConfirmation = false
     
-    
-    
+    //MARK: - Challenge 2, Project Cupcake Corner: If our call to placeOrder() fails – for example if there is no internet connection – show an informative alert for the user. To test this, try commenting out the request.httpMethod = "POST" line in your code, which should force the request to fail.
+    @State private var errorMessage = ""
+    @State private var showingErrorAlert = false
     
     
     var body: some View {
@@ -52,6 +53,12 @@ struct CheckoutView: View {
         } message: {
             Text(confirmaionMessage)
         }
+        //MARK: - Challenge 2, Project Cupcake Corner: If our call to placeOrder() fails – for example if there is no internet connection – show an informative alert for the user. To test this, try commenting out the request.httpMethod = "POST" line in your code, which should force the request to fail.
+        .alert("Order failed", isPresented: $showingErrorAlert) {
+            Button("OK") {}
+        } message: {
+            Text(errorMessage)
+        }
     }
     
     func placeOrder() async {
@@ -70,12 +77,14 @@ struct CheckoutView: View {
             let (data, _) = try await URLSession.shared.upload(for: request, from: encoded)
             //MARK: - Handle result here
             //MARK: - Commented code did not work 
-            //let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
-            //confirmaionMessage = "Your order \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on it's way!"
+//            let decodedOrder = try JSONDecoder().decode(Order.self, from: data)
+//            confirmaionMessage = "Your order \(decodedOrder.quantity)x \(Order.types[decodedOrder.type].lowercased()) cupcakes is on it's way!"
             confirmaionMessage = "Your order \(order.quantity)x \(Order.types[order.type].lowercased()) cupcakes is on its way!"
             showingConfirmation = true
         } catch {
             print("Checkout failed: \(error.localizedDescription)")
+            errorMessage = "Your order could not be placed.\nReason: \(error.localizedDescription)"
+                showingErrorAlert = true
         }
     }
 }
