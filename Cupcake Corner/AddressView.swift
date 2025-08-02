@@ -32,6 +32,17 @@ struct AddressView: View {
         }
         .navigationTitle("Delivery details")
         .navigationBarTitleDisplayMode(.inline)
+        
+        //MARK: - Every time the user enters something in one of the fields (name, street, city, zip), order.save() is called immediately and the data is saved in UserDefaults.
+        .onChange(of: order.name) { order.save() }
+        .onChange(of: order.streetAddress) { order.save() }
+        .onChange(of: order.city) { order.save() }
+        .onChange(of: order.zip) { order.save() }
+        
+        //MARK: - onDisappear to save the data when the user exits the AddressView
+        .onDisappear() {
+            order.save()
+        }
     }
 }
 

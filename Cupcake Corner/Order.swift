@@ -11,6 +11,36 @@ import Foundation
 
 class Order: Codable {
     
+    //MARK: - Challenge 3., Cupcake Corner: For a more challenging task, try updating the Order class so it saves data such as the user's delivery address to UserDefaults. This takes a little thinking, because @AppStorage won't work here, and you'll find getters and setters cause problems with Codable support. Can you find a middle ground?
+    private static let userDefaultsKey = "SavedOrder"
+
+    init() {
+        load()
+    }
+    
+    func save() {
+        if let encoded = try? JSONEncoder().encode(self) {
+            UserDefaults.standard.set(encoded, forKey: Self.userDefaultsKey)
+        }
+    }
+    
+    func load() {
+        guard let data = UserDefaults.standard.data(forKey: Self.userDefaultsKey),
+              let decoded = try? JSONDecoder().decode(Order.self, from: data) else { return }
+        
+        self.type = decoded.type
+        self.quantity = decoded.quantity
+        self.specialRequestEnabled = decoded.specialRequestEnabled
+        self.extraFrosting = decoded.extraFrosting
+        self.addSprinkles = decoded.addSprinkles
+        self.name = decoded.name
+        self.streetAddress = decoded.streetAddress
+        self.city = decoded.city
+        self.zip = decoded.zip
+    }
+    
+    
+    
     enum CodingKeys: String, CodingKey {
         case _type = "type"
         case _quantity = "quantity"
